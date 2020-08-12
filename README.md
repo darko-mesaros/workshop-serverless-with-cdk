@@ -1,5 +1,31 @@
 # Building Serverless Applications with CDK - Workshop
 
+
+Welcome to this workshop, where I will attempt to take you through what it takes
+to create a bare-bone serverless Application with AWS Cloud Development Kit.
+This workshop comes with a working example so feel free to look around it if you
+get bored from following each step.
+
+* [Introduction to AWS CDK](#introduction-to-aws-cdk)
+* [Setting up your Development Environment](#setting-up-your-development-environment)
+  * [AWS Account](#aws-account)
+  * [Setup using AWS Cloud9 (Recommended)](#setup-using-aws-cloud9-(recommended))
+  * [Setup using my own computer, not using Cloud9](#setup-using-my-own-computer%2C-not-using-cloud9)
+* [Creating our first lambda function](#creating-our-first-lambda-function)
+  * [Initializing our CDK app](#initializing-our-cdk-app)
+  * [Serverless starts with a Lambda](#serverless-starts-with-a-lambda)
+    * [CDK Part](#cdk-part)
+    * [The Lambda function itself](#the-lambda-function-itself)
+    * [Create our first Lambda with CDK](#create-our-first-lambda-with-cdk)
+  * [Serve my APIs](#serve-my-apis)
+* [Databases and more](#databases-and-more)
+  * [DynamoDB](#dynamodb)
+  * [Read/Write Lambda](#read%2Fwrite-lambda)
+  * [Lets see if our Lambdas work](#let’s-see-if-our-lambdas-works)
+* [Don't `DEV` in `PROD`](#don’t-dev-in-prod)
+  * [Create multiple stacks](#create-multiple-stacks)
+* [Cleanup](#cleanup)
+
 ## Introduction to AWS CDK
 
 The AWS Cloud Development Kit (AWS CDK) is an open source software development
@@ -10,7 +36,7 @@ Provisioning cloud applications can be a challenging process that requires you
 to perform manual actions, write custom scripts, maintain templates, or learn
 domain-specific languages. AWS CDK uses the **familiarity and expressive power of
 programming languages** for modeling your applications. It provides you with
-high-level components that preconfigure cloud resources with proven defaults, so
+high-level components that pre-configure cloud resources with proven defaults, so
 you can build cloud applications without needing to be an expert. AWS CDK
 provisions your resources in a safe, repeatable manner through AWS
 CloudFormation. It also enables you to compose and share your own custom
@@ -29,6 +55,9 @@ Okay, there is more to it - but this is what it takes to install the CDK CLI to 
 workstation or wherever you wish to write your code from. Let's now focus on
 setting you up to write your first bit of code.
 
+:point_up: **NOTE: This workshop uses TypeScript as it's lanugage of choice. But
+the same ideas can be applied to any other language supported** :point_up:
+
 ## Setting up your Development Environment
 
 ### AWS Account
@@ -36,7 +65,7 @@ setting you up to write your first bit of code.
 In order to complete this workshop, you’ll need access to an AWS account. Your
 access needs to have sufficient permissions to create resources in IAM,
 CloudFormation, API Gateway, Lambda, DynamoDB and
-S3. If you currently don’t have an AWS account, you can create one
+S3. If you currently don't have an AWS account, you can create one
 [here](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account)
 
 ### Setup using AWS Cloud9 (Recommended)
@@ -50,15 +79,19 @@ so you are free to run it from your local computer as well.
 If you want to use Cloud9, follow these instructions: [Create a Cloud9
 Workspace](https://docs.aws.amazon.com/cloud9/latest/user-guide/tutorial.html)
 
+When using Cloud9, make sure you update AWS CDK to the latest version.
+
 ### Setup using my own computer, not using Cloud9
 
 If you prefer to run the workshop from your local computer without using Cloud9,
 make sure you install the following tools which are available for Linux, MacOS
 and Windows.
 
-- AWS CLI - We need the CLI to easily setup the AWS Credentials locally.
-- NodeJS and npm - This is required for the installation of the CDK CLI.
-- AWS CDK - The CLI utility that will be used throughout the workshop.
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) - We need the CLI to easily setup the AWS Credentials locally.
+- [NodeJS](https://nodejs.org/en/download/) and
+  [npm](https://www.npmjs.com/get-npm) - This is required for the installation
+  of the CDK CLI.
+- [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) - The CLI utility that will be used throughout the workshop.
 
 Once you have installed all requirements, you can start the workshop.
 
@@ -112,7 +145,20 @@ command:
 npm run build
 ```
 
-You should get **no** output if eveything is succesfull!
+You should get **no** output if everything is successful! Before we continue to
+the actual meat and potatoes of our workshop we just need to quickly run the
+Bootstrap procedure for AWS CDK - this is required as we will be pushing assets
+(Lambda functions) to AWS.
+
+The bootstrap process basically prepares our account/region for CDK - it just
+creates an S3 bucket with the appropriate permissions. To do this we simply need
+to run:
+
+```bash
+cdk bootstrap
+```
+
+Now we are ready for some awesome CDK action! :sunglasses:
 
 ### Serverless starts with a Lambda
 
@@ -152,8 +198,8 @@ Okay, let's install the Lambda module:
 npm install @aws-cdk/aws-lambda
 ```
 
-If all that is succesfull, let's go back to our
-`lib/hello_serverless_cdk-stack.ts` file and make the appropropriate changes to
+If all that is successful, let's go back to our
+`lib/hello_serverless_cdk-stack.ts` file and make the appropriate changes to
 add the Lambda Function.
 
 Here is how your updated file should look like:
@@ -186,7 +232,7 @@ import it as `lambda` so later on we can reference it to create the function:
 import * as lambda from '@aws-cdk/aws-lambda';
 ```
 
-Then we actually create the Lambda functon, and assing it to a constant called
+Then we actually create the Lambda function, and assign it to a constant called
 `welcomeLambda`.
 
 ```typescript
@@ -208,7 +254,7 @@ There are a few things we need to note here regarding this piece of code:
 
 #### The Lambda function itself
 
-A lambda function would not be a function with out the appropropriate code. So
+A lambda function would not be a function with out the appropriate code. So
 let's create that now.
 
 At the root of your CDK app, create a directory named `lambda` and within it
@@ -246,7 +292,7 @@ cdk deploy
 ```
 
 If all is okay, you should be prompted to confirm some IAM changes, as CDK will
-actually cretea some IAM resources for our Lambda function, make sure to confirm
+actually create some IAM resources for our Lambda function, make sure to confirm
 these if you are happy with them:
 
 ![fistdeploy](img/firstdeploy.png)
@@ -334,9 +380,9 @@ apiHello.addMethod('GET', apiHelloInteg);
 ```
 
 So, the first line here creates a new Lambda + API Gateway integration, and we
-tie it to the `welcomeLambda` function we created before. Then we followup by
+tie it to the `welcomeLambda` function we created before. Then we follow-up by
 creating a `hello` resource to our API Gateway - in essence just adding a path
-to our API GW URL (eg. `$APIGW_URL/prod/hello`) that will be used for our
+to our API Gateway URL (eg. `$APIGW_URL/prod/hello`) that will be used for our
 greeter lambda function - this will be the URL we trigger to invoke the lambda
 Function. Lastly we are adding the `GET` method to that resource.
 
@@ -360,7 +406,7 @@ now there is some additional information - an URL we can use :heart_eyes:
 
 ![succdep](img/succdep.png)
 
-We can actually open this URL up in our favorite browser (or API developent
+We can actually open this URL up in our favorite browser (or API development
 tool) to see how it works. **Remmember to add the `hello` to the end of the
 URL**
 
@@ -388,7 +434,7 @@ install the required module for this to work:
 npm install @aws-cdk/aws-dynamodb
 ```
 
-Hopefully this has executed succesfully and we can go ahead and add some code to
+Hopefully this has executed successfully and we can go ahead and add some code to
 our stack. Let's go and edit our `hello_serverless_cdk-stack.ts` file and add
 our module and our DynamoDB table to it.
 
@@ -444,9 +490,9 @@ this region already** :point_up:
 ### Read/Write Lambda
 
 Now, let's add a few Lambda scripts that will interact with data - the goal of
-these cripts will be to created and read "users" - arbitrary data written into
+these scripts will be to created and read "users" - arbitrary data written into
 the DynamoDB table for the sake of this workshop. For this use case we will
-create two additional Lamba scripts, one that reads and the one that writes to
+create two additional Lambda scripts, one that reads and the one that writes to
 the DynamoDB table.
 
 We can follow the same example as above when creating functions, but our stack
@@ -598,7 +644,7 @@ exports.handler = (event, context, callback) => {
     Item['name'] = event.queryStringParameters.name;
     Item['location'] = event.queryStringParameters.location;
     Item['age'] = event.queryStringParameters.age;
-    
+
     dynamo.put({TableName, Item}, function (err, data) {
         if (err) {
             console.log('error', err);
@@ -633,7 +679,7 @@ make sure to review those and confirm them. If all goes good - you should (as
 always) get that lovely :white_check_mark: and an API Gateway URL. Make sure to
 copy the URL somewhere.
 
-### Testing our Lambdas
+### Let's see if our Lambdas works
 
 Okay, let's have a look if our Serverless API application works as it should.
 First thing we need to do is run the `create` API call to create a user in our
@@ -678,7 +724,7 @@ main part should be at the bottom:
 
 As said before ... YAY! It works :rocket:
 
-We have succesfully created a rather simple Serverless Application with AWS CDK,
+We have successfully created a rather simple Serverless Application with AWS CDK,
 so right now we have three Lambda Functions, an API Gateway and a DynamoDB
 table, and it all does it's job. What ever that is. But we can do one better,
 let's modify our CDK code so we can introduce multiple environments to our
@@ -690,7 +736,7 @@ application.
 
 As any good workload out there we need to be able to split up our Production
 environment from our Staging or Development ones. With CDK that can be done
-realtively simply with the use of multiple Stacks.
+relatively simply with the use of multiple Stacks.
 
 One thing I need to explain when it comes to CDK is the concept of Apps, Stacks
 and Resources:
@@ -771,12 +817,12 @@ We have added a few lines of code here, namely we've given the ability to our
 CDK app to create multiple Stacks with some different parameters. As you can see
 here, we are simply passing the parameter `prod` (to be either `true` or
 `false`) to the stack. On top of that, we are also defining the region - if we
-would like to launch staging in a different region (for some reason). 
+would like to launch staging in a different region (for some reason).
 
 Okay, but now we need to implement some logic into our stacks to handle the
 `prod` being `true` or `false`. Let's go back to our trusty
 `hello_serverless_cdk-stack.ts` stack file, and add the following lines just
-below our imports: 
+below our imports:
 
 ```typescript
 // Properties defined where we determine if this is a prod stack or not
@@ -931,8 +977,8 @@ is a `PROD` or a `STAGING` stack.
 
 ## Cleanup
 
-At the end of everyworkshop, you may wish to cleanup the stuff you have created
-so you do not incurr additional costs. Well it is simple when it comes to CDK -
+At the end of every workshop, you may wish to cleanup the stuff you have created
+so you do not incur additional costs. Well it is simple when it comes to CDK -
 just make sure to run these lovely commands:
 
 ```bash
