@@ -14,7 +14,6 @@ export class HelloServerlessCdkStack extends cdk.Stack {
 
     // The code that defines your stack goes here
     // Defining the prod or no prod
-    // Defining the prod or no prod
     if (props && props.prod) { // prod
       var dynamoDbReadWrite = 200;
       var apiGatewayName = 'PROD_cdk_api';
