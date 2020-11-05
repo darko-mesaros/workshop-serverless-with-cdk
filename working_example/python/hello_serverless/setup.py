@@ -7,13 +7,13 @@ with open("README.md") as fp:
 
 setuptools.setup(
     name="hello_serverless",
-    version="0.0.1",
+    version="0.1.1",
 
-    description="An empty CDK Python app",
+    description="CDK Project that produces a serverless application",
     long_description=long_description,
     long_description_content_type="text/markdown",
 
-    author="author",
+    author="Darko Meszaros",
 
     package_dir={"": "hello_serverless"},
     packages=setuptools.find_packages(where="hello_serverless"),
