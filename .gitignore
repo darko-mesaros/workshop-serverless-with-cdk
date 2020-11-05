@@ -2,7 +2,7 @@
 !jest.config.js
 *.d.ts
 node_modules
-!working_example/lambda/*.js
+!working_example/typescript/lambda/*.js
 
 # CDK asset staging directory
 .cdk.staging
@@ -11,3 +11,13 @@ cdk.out
 # Parcel build directories
 .cache
 .build
+
+# Python stuff
+.venv
+*.swp
+package-lock.json
+__pycache__
+.pytest_cache
+.env
+*.egg-info
+
