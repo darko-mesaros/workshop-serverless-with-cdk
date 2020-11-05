@@ -1,5 +1,10 @@
 # Building Serverless Applications with CDK - Workshop
 
+:point_up: **NOTE: This workshop uses TypeScript as it's lanugage of choice. But
+the same ideas can be applied to any other language supported** :point_up:
+
+:warning: **UPDATE 2020-11-05:** Added support for Python in the working
+examples!
 
 Welcome to this workshop, where I will attempt to take you through what it takes
 to create a bare-bone serverless Application with AWS Cloud Development Kit.
@@ -55,8 +60,6 @@ Okay, there is more to it - but this is what it takes to install the CDK CLI to 
 workstation or wherever you wish to write your code from. Let's now focus on
 setting you up to write your first bit of code.
 
-:point_up: **NOTE: This workshop uses TypeScript as it's lanugage of choice. But
-the same ideas can be applied to any other language supported** :point_up:
 
 ## Setting up your Development Environment
 
