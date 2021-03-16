@@ -1,6 +1,6 @@
 # Building Serverless Applications with CDK - Workshop
 
-:point_up: **NOTE: This workshop uses TypeScript as it's lanugage of choice. But
+:point_up: **NOTE: This workshop's README uses TypeScript as it's lanugage of choice. But
 the same ideas can be applied to any other language supported** :point_up:
 
 :warning: **UPDATE 2020-11-05:** Added support for Python in the working
