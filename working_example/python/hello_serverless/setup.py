@@ -7,7 +7,7 @@ with open("README.md") as fp:
 
 setuptools.setup(
     name="hello_serverless",
-    version="0.1.1",
+    version="0.1.2",
 
     description="CDK Project that produces a serverless application",
     long_description=long_description,
@@ -19,10 +19,10 @@ setuptools.setup(
     packages=setuptools.find_packages(where="hello_serverless"),
 
     install_requires=[
-        "aws-cdk.core==1.71.0",
-        "aws-cdk.aws-lambda==1.71.0",
-        "aws-cdk.aws-apigateway==1.71.0",
-        "aws-cdk.aws-dynamodb==1.71.0",
+        "aws-cdk.core==1.93.0",
+        "aws-cdk.aws-lambda==1.93.0",
+        "aws-cdk.aws-apigateway==1.93.0",
+        "aws-cdk.aws-dynamodb==1.93.0",
     ],
 
     python_requires=">=3.6",
